@@ -23,9 +23,9 @@ const Login = () => {
   }
   const handleSubmit = () => {
     let userEmail = formData.email;
-    localStorage.setItem("currentUser", userEmail);
     let obj = users.filter((item) => item.email === userEmail);
-    if (obj) {
+    if (obj.length) {
+      localStorage.setItem("currentUser", userEmail);
       toast.success("Logged in Success");
       push("/");
     } else {

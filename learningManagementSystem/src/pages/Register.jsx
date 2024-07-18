@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import registerPoster from "../assets/registerPoster.png";
 import { FaArrowRight } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
@@ -19,10 +19,16 @@ const Register = () => {
       [key]: value,
     });
   };
+  const [users, setUsers] = useState([]);
+
+  function getAllUsers() {
+    let usersJSON = localStorage.getItem("users");
+    setUsers(JSON.parse(usersJSON) || []);
+  }
 
   function addUser(user) {
     let usersJSON = localStorage.getItem("users");
-    let users = JSON.parse(usersJSON) || []; // Initialize as empty array if no data exists
+    let users = JSON.parse(usersJSON) || [];
     users.push(user);
     localStorage.setItem("users", JSON.stringify(users));
   }
@@ -34,11 +40,14 @@ const Register = () => {
         password: formData.password,
       };
       addUser(obj);
+      localStorage.setItem("currentUser", obj.email);
+      push("/");
       toast.success("User register successfully");
     } else {
       toast.warning("Please confirm Password");
     }
   };
+
   useEffect(() => {
     getAllUsers();
   }, []);
@@ -51,7 +60,13 @@ const Register = () => {
             <div className="text-2xl font-semibold py-5">
               Create your account
             </div>
-            <form action="" className="w-96">
+            <form
+              action=""
+              className="w-96"
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
               <div className="flex flex-col gap-2 my-2">
                 <label htmlFor="username">Username</label>
                 <input

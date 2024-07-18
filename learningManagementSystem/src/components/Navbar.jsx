@@ -57,7 +57,7 @@ const Navbar = () => {
             onClick={() => {
               if (userStatus) {
                 localStorage.removeItem("currentUser");
-                push("/login");
+                window.location.reload();
               } else {
                 push("/login");
               }
